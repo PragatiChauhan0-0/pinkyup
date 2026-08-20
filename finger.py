@@ -4,7 +4,7 @@ import cv2
 from cvzone.HandTrackingModule import HandDetector
 
 print("PROGRAM STARTED", flush=True)
-hand_detector = HandDetector(maxHands=1,detectionCon=0.9,minTrackCon=0.9)
+hand_detector = HandDetector(maxHands=2,detectionCon=0.9,minTrackCon=0.9)
 
 #open the default camera
 cam = cv2.VideoCapture(0) # parameter = source, 0 - default camera, 1 - 2nd camera , 2 - 3rd camera
@@ -19,14 +19,17 @@ while True:
     if ret == False:
         break
 
-    hands,image  = hand_detector.findHands(frame)
+    hands,image  = hand_detector.findHands(frame, flipType=True) 
 
     print("Hands detected:", len(hands))
 
     if hands:
-        hand = hands[0]
-        fingers = hand_detector.fingersUp(hand)
-        print("Fingers:", fingers) 
+
+        for hand in hands:
+            print(hand["type"])
+            fingers = hand_detector.fingersUp(hand)
+            
+            print("Fingers:", fingers) 
 
     cv2.imshow("Image",image)
 
